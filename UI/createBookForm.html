@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="bookApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Bank</title> 
+    <link rel="icon" href="./icon.svg" type="image/icon type">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+        body {
+            background-image: url('./bookbg.jpeg');
+        }
+    </style>
+</head>
+
+<body >
+    <div class="container" style="background-color: rgba(255, 255, 255, 0.945); height: 100vh;">
+        <nav class="navbar navbar-light bg-danger">
+            <span class="navbar-brand mb-0 h1 text-light">Book Bank
+                <svg width="20" height="20" viewBox="0 0 20 20" class="bi bi-book-half" fill="white"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd"
+                        d="M12.786 1.072C11.188.752 9.084.71 7.646 2.146A.5.5 0 0 0 7.5 2.5v11a.5.5 0 0 0 .854.354c.843-.844 2.115-1.059 3.47-.92 1.344.14 2.66.617 3.452 1.013A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.276-.447L15.5 2.5l.224-.447-.002-.001-.004-.002-.013-.006-.047-.023a12.582 12.582 0 0 0-.799-.34 12.96 12.96 0 0 0-2.073-.609zM15 2.82v9.908c-.846-.343-1.944-.672-3.074-.788-1.143-.118-2.387-.023-3.426.56V2.718c1.063-.929 2.631-.956 4.09-.664A11.956 11.956 0 0 1 15 2.82z" />
+                    <path fill-rule="evenodd"
+                        d="M3.214 1.072C4.813.752 6.916.71 8.354 2.146A.5.5 0 0 1 8.5 2.5v11a.5.5 0 0 1-.854.354c-.843-.844-2.115-1.059-3.47-.92-1.344.14-2.66.617-3.452 1.013A.5.5 0 0 1 0 13.5v-11a.5.5 0 0 1 .276-.447L.5 2.5l-.224-.447.002-.001.004-.002.013-.006a5.017 5.017 0 0 1 .22-.103 12.958 12.958 0 0 1 2.7-.869z" />
+                </svg>
+            </span>
+
+        </nav>
+
+        <div class="d-flex flex-row w-100 border p-4 " ng-controller="BookController"   >
+
+            <div class="d-flex align-content-center flex-column w-25">
+                <div class="form-group w-100">
+                    <label >Book Name</label>
+                    <input type="text" ng-model="bookName" class="form-control"
+                         placeholder="Enter Book Name">
+
+                </div>
+                <div class="form-group">
+                    <label >Book Author</label>
+                    <input type="text" ng-model="bookAuthor" class="form-control" 
+                         placeholder="Enter Book Author Name">
+
+                </div>
+                <button type="submit" ng-click="insertBook()" class="btn btn-danger">Add</button>
+            </div>
+
+            <div class="ml-5 d-flex flex-column w-50 ">
+                <table>
+                    <thead>
+
+                        <tr>
+                            <th></th>
+                            <th>
+                                Book Name
+                            </th>
+                            <th>
+                                Book Author
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in allBooks">
+
+                            <td>
+                                <div style="cursor: pointer;" ng-if="item.isEdit == false">
+
+
+                                    <svg width="16" height="16" viewBox="0 0 16 16" class="bi bi-pencil" fill="blue"
+                                        xmlns="http://www.w3.org/2000/svg" ng-click="edit(item)">
+                                        <path fill-rule="evenodd"
+                                            d="M11.293 1.293a1 1 0 0 1 1.414 0l2 2a1 1 0 0 1 0 1.414l-9 9a1 1 0 0 1-.39.242l-3 1a1 1 0 0 1-1.266-1.265l1-3a1 1 0 0 1 .242-.391l9-9zM12 2l2 2-9 9-3 1 1-3 9-9z" />
+                                        <path fill-rule="evenodd"
+                                            d="M12.146 6.354l-2.5-2.5.708-.708 2.5 2.5-.707.708zM3 10v.5a.5.5 0 0 0 .5.5H4v.5a.5.5 0 0 0 .5.5H5v.5a.5.5 0 0 0 .5.5H6v-1.5a.5.5 0 0 0-.5-.5H5v-.5a.5.5 0 0 0-.5-.5H3z" />
+                                    </svg>
+
+                                    <svg width="16" height="16" viewBox="0 0 16 16" class="bi bi-trash" fill="red"
+                                        xmlns="http://www.w3.org/2000/svg" ng-click="delete(item)">
+                                        <path
+                                            d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                        <path fill-rule="evenodd"
+                                            d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                                    </svg>
+                                </div>
+                                <div ng-if="item.isEdit" style="cursor: pointer;">
+                                    <svg width="16" ng-click="UpdateBook(item)" height="16" viewBox="0 0 16 16"
+                                        class="bi bi-check-circle-fill" fill="green" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd"
+                                            d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+                                    </svg>
+                                    <svg class="bi bi-chevron-right" width="16" height="16" viewBox="0 0 16 16"
+                                        fill="red" xmlns="http://www.w3.org/2000/svg" ng-click="no(item)">
+                                        <path fill-rule="evenodd"
+                                            d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                        <path fill-rule="evenodd"
+                                            d="M3.5 8a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.5-.5z" />
+                                    </svg>
+                                </div>
+                            </td>
+                            <td>
+                                <span ng-if="item.isEdit == false">
+                                    {{item.bookname}}
+                                </span>
+                                <span ng-if="item.isEdit">
+                                    <input type="text" ng-model="item.bookname" class="form-control" 
+                                        aria-describedby="emailHelp" placeholder="Enter Book Author Name">
+                                </span>
+
+                            </td>
+                            <td>
+                                <span ng-if="item.isEdit == false">
+                                    {{item.bookauthor}}
+                                </span>
+                                <span ng-if="item.isEdit">
+                                    <input type="text" ng-model="item.bookauthor" class="form-control" 
+                                        aria-describedby="emailHelp" placeholder="Enter Book Author Name">
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+<script src="./angular.js"></script>
+
+
+<script src="./book/bookApp.js"></script>
+
+
+</html>
